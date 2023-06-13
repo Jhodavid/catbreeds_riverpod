@@ -39,7 +39,7 @@ class _BreedsPageState extends ConsumerState<BreedsPage> {
     }
 
     if(breedsRequestState == BreedsRequestStatesEnum.errorInBreeds) {
-      return Scaffold(body: _NetworkErrorMessage());
+      return Scaffold(body: _NetworkErrorMessage(ref));
     }
 
     if(filterText.isEmpty) {
@@ -131,6 +131,10 @@ class _NoResultsMessage extends StatelessWidget {
 
 class _NetworkErrorMessage extends ConsumerWidget {
 
+  final WidgetRef parentRef;
+
+  _NetworkErrorMessage(this.parentRef);
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
@@ -167,7 +171,7 @@ class _NetworkErrorMessage extends ConsumerWidget {
                 ),
               ],
             ),
-            onPressed: () => getBreedsData(ref),
+            onPressed: () => getBreedsData(parentRef),
           )
         ],
       ),

@@ -10,18 +10,18 @@ import 'package:catbreeds_riverpod/presentation/providers/breeds/utils/breeds_re
 
 
 Future<void> getBreedsData(WidgetRef ref) async {
-  setBreedsRequestState(ref ,BreedsRequestStatesEnum.loadingBreeds);
+  setBreedsRequestState(ref, BreedsRequestStatesEnum.loadingBreeds);
 
   final breeds = await ref.read(breedsProvider.notifier).getBreeds();
 
   if(breeds != null) {
-    setBreedsRequestState(ref ,BreedsRequestStatesEnum.loadingBreedsImages);
+    setBreedsRequestState(ref, BreedsRequestStatesEnum.loadingBreedsImages);
 
     await ref.read(breedsProvider.notifier).getBreedsImages();
     setBreedsRequestState(ref, BreedsRequestStatesEnum.complete);
 
   } else {
-    setBreedsRequestState(ref ,BreedsRequestStatesEnum.errorInBreeds);
+    setBreedsRequestState(ref, BreedsRequestStatesEnum.errorInBreeds);
   }
 
 }
