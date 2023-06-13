@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
 
+import 'package:go_router/go_router.dart';
+
 
 import 'package:catbreeds_riverpod/domain/entities/breed_entity.dart';
+import 'package:catbreeds_riverpod/config/localization/app_localizations.dart';
+
+import 'package:catbreeds_riverpod/presentation/pages/detail/widgets/characteristics_card.dart';
+import 'package:catbreeds_riverpod/presentation/pages/detail/widgets/description_card.dart';
+import 'package:catbreeds_riverpod/presentation/pages/detail/widgets/simple_info_card.dart';
+import 'package:catbreeds_riverpod/presentation/pages/detail/widgets/urls_cards.dart';
+
+import 'package:catbreeds_riverpod/presentation/widgets/cat_image.dart';
+
 
 
 class DetailPage extends StatelessWidget {
@@ -15,6 +26,65 @@ class DetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+
+    final localeStrings = AppLocalizations.of(context).detailModule;
+    
+    final textStylesTheme = Theme.of(context).textTheme;
+
+
+    final height = MediaQuery.of(context).size.height - (
+      MediaQuery.of(context).padding.top +
+      MediaQuery.of(context).padding.bottom +
+      50
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 50,
+        leading: TextButton(
+          child: Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: Theme.of(context).primaryColor,
+          ),
+          onPressed: () => context.pop(),
+        ),
+        centerTitle: true,
+        title: Text(
+          breed.name,
+          style: textStylesTheme.displaySmall,
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            CatImagesCarousel(
+              height: height*0.5,
+              fitImages: BoxFit.fitWidth,
+              imageList: breed.imagesUrls,
+            ),
+            SizedBox(
+              height: height*0.5,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    DescriptionCard(breed: breed),
+                    
+                    SimpleInfoCard(title: localeStrings.countryOrigin, value: breed.origin),
+                    SimpleInfoCard(title: localeStrings.lifetime, value: '${breed.lifeSpan} ${localeStrings.years}'),
+                    SimpleInfoCard(title: localeStrings.weight, value: '${breed.weight} kg'),
+
+                    CharacteristicsCard(breed: breed),
+
+                    URLsCards(breed: breed),
+
+                    const SizedBox(height: 10)
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
